@@ -16,3 +16,23 @@ class NewsStateGetBusinessError extends NewsState {
 
   NewsStateGetBusinessError(this.error);
 }
+
+class NewsStateGetSportsLoading extends NewsState {}
+
+class NewsStateGetSportsSuccess extends NewsState {}
+
+class NewsStateGetSportsError extends NewsState {
+  final String error;
+
+  NewsStateGetSportsError(this.error);
+}
+
+class NewsStateGetScienceLoading extends NewsState {}
+
+class NewsStateGetScienceSuccess extends NewsState {}
+
+class NewsStateGetScienceError extends NewsState {
+  final String error;
+
+  NewsStateGetScienceError(this.error);
+}
