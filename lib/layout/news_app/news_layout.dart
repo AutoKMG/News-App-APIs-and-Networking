@@ -17,10 +17,6 @@ class NewsLayout extends StatelessWidget {
             title: Text("News App"),
             actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.add),
-          ),
           body: newsHandler.screens[newsHandler.currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             items: newsHandler.bottomNavItems,
