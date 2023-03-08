@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewsHandler()..getBusinessData(),
+      create: (context) => NewsHandler(),
       child: MaterialApp(
         title: 'News App',
         debugShowCheckedModeBanner: false,
@@ -50,7 +50,8 @@ class MyApp extends StatelessWidget {
               selectedItemColor: Colors.deepOrange,
               type: BottomNavigationBarType.fixed,
             )),
-        home: NewsLayout(),
+        home: Directionality(
+            textDirection: TextDirection.rtl, child: NewsLayout()),
       ),
     );
   }
