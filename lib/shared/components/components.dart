@@ -1,6 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -72,7 +71,7 @@ Widget defaultFormField({
       ),
     );
 
-Widget buildArticleItem() {
+Widget buildArticleItem(article) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Row(
@@ -83,7 +82,8 @@ Widget buildArticleItem() {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
-              image: NetworkImage('https://i.imgur.com/kmryMrZ.jpg'),
+              image: NetworkImage(
+                  '${article['urlToImage'] ?? "https://i.imgur.com/kmryMrZ.jpg"}'),
               fit: BoxFit.cover,
             ),
           ),
@@ -100,8 +100,8 @@ Widget buildArticleItem() {
               children: [
                 Expanded(
                   child: Text(
-                    "Title",
-                    maxLines: 4,
+                    "${article['title']}",
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 18,
@@ -110,7 +110,7 @@ Widget buildArticleItem() {
                   ),
                 ),
                 Text(
-                  "2021-04-02T11:43:00Z",
+                  "${article['publishedAt']}",
                   style: TextStyle(
                     color: Colors.grey,
                   ),
@@ -132,6 +132,27 @@ Widget myDividor() {
       height: 1,
       color: Colors.grey[300],
     ),
+  );
+}
+
+Widget articlesScreenBuilder(List list) {
+  return ConditionalBuilder(
+    condition: list.length > 0,
+    builder: (context) {
+      return ListView.separated(
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return buildArticleItem(list[index]);
+        },
+        separatorBuilder: (context, index) {
+          return myDividor();
+        },
+        itemCount: list.length,
+      );
+    },
+    fallback: (context) {
+      return Center(child: CircularProgressIndicator());
+    },
   );
 }
 /*
