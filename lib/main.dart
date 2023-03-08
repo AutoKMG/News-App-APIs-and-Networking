@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/layout/news_app/news_layout.dart';
 import 'package:news_app/shared/bloc_observer.dart';
 import 'package:news_app/shared/logic/news/handler.dart';
+import 'package:news_app/shared/network/remote/dio_helper.dart';
 
 void main() {
   Bloc.observer = MyBlocObserver();
+  DioHelper.init();
   runApp(MyApp());
 }
 

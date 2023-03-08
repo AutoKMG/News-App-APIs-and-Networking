@@ -33,6 +33,7 @@ dependencies:
   conditional_builder_null_safety: ^0.0.6
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
+  dio: ^5.0.1
 
 dev_dependencies:
   flutter_test:
