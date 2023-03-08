@@ -25,11 +25,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewsHandler(),
+      create: (context) => NewsHandler()..getBusinessData(),
       child: MaterialApp(
         title: 'News App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+            primarySwatch: Colors.deepOrange,
+            floatingActionButtonTheme: FloatingActionButtonThemeData(
+                backgroundColor: Colors.deepOrange),
             appBarTheme: AppBarTheme(
                 backgroundColor: Colors.white,
                 systemOverlayStyle: SystemUiOverlayStyle(
