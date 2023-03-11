@@ -36,6 +36,8 @@ dependencies:
   dio: ^5.0.1
   hexcolor: ^3.0.1
   shared_preferences: ^2.0.18
+  country_picker: ^2.0.20
+  webview_flutter: ^4.0.6
 
 dev_dependencies:
   flutter_test:
