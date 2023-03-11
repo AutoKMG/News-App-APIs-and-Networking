@@ -4,12 +4,15 @@ import 'package:news_app/modules/business/business_screen.dart';
 import 'package:news_app/modules/science/science_screen.dart';
 import 'package:news_app/modules/settings/settings_screen.dart';
 import 'package:news_app/modules/sports/sports_screen.dart';
+import 'package:news_app/shared/network/local/cache_helper.dart';
 import 'package:news_app/shared/network/remote/dio_helper.dart';
 
 part 'state.dart';
 
 class NewsHandler extends Cubit<NewsState> {
   NewsHandler() : super(NewsStateInitial()) {
+    isDark = CacheHelper.getBoolean(key: 'isDark') ?? isDark;
+    isRTL = CacheHelper.getBoolean(key: 'isRTL') ?? isRTL;
     getBusinessData();
     getSportsData();
     getScienceData();
@@ -42,12 +45,16 @@ class NewsHandler extends Cubit<NewsState> {
 
   void changeDirection() {
     isRTL = !isRTL;
-    emit(NewsStateToggleDirectionality());
+    CacheHelper.putBoolean(key: 'isRTL', value: isRTL).then((_) {
+      emit(NewsStateToggleDirectionality());
+    });
   }
 
   void toggleDarkTheme() {
     isDark = !isDark;
-    emit(NewsStateToggleDarkTheme());
+    CacheHelper.putBoolean(key: 'isDark', value: isDark).then((_) {
+      emit(NewsStateToggleDarkTheme());
+    });
   }
 
   void getBusinessData() {

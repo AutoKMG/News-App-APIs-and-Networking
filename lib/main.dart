@@ -4,24 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/layout/news_app/news_layout.dart';
 import 'package:news_app/shared/bloc_observer.dart';
 import 'package:news_app/shared/logic/news/handler.dart';
+import 'package:news_app/shared/network/local/cache_helper.dart';
 import 'package:news_app/shared/network/remote/dio_helper.dart';
 import 'package:news_app/shared/styles/themes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   DioHelper.init();
+  await CacheHelper.init();
   runApp(MyApp());
 }
 
-// Stateless
-// Stateful
-
-// class MyApp
-
 class MyApp extends StatelessWidget {
-  // constructor
-  // build
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
