@@ -36,3 +36,7 @@ class NewsStateGetScienceError extends NewsState {
 
   NewsStateGetScienceError(this.error);
 }
+
+class NewsStateToggleDirectionality extends NewsState {}
+
+class NewsStateToggleDarkTheme extends NewsState {}

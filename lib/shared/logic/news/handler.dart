@@ -14,7 +14,9 @@ class NewsHandler extends Cubit<NewsState> {
     getSportsData();
     getScienceData();
   }
-
+  String apiKey = '3afd108e1ee1445c80a26fd0cfaa356e';
+  bool isRTL = false;
+  bool isDark = false;
   int currentIndex = 0;
   List<dynamic> business = [];
   List<dynamic> sports = [];
@@ -38,6 +40,16 @@ class NewsHandler extends Cubit<NewsState> {
     emit(NewsStateIndexChanged());
   }
 
+  void changeDirection() {
+    isRTL = !isRTL;
+    emit(NewsStateToggleDirectionality());
+  }
+
+  void toggleDarkTheme() {
+    isDark = !isDark;
+    emit(NewsStateToggleDarkTheme());
+  }
+
   void getBusinessData() {
     emit(NewsStateGetBusinessLoading());
     DioHelper.getData(
@@ -45,7 +57,7 @@ class NewsHandler extends Cubit<NewsState> {
       query: {
         'country': 'eg',
         'category': 'business',
-        'apiKey': '65f7f556ec76449fa7dc7c0069f040ca'
+        'apiKey': apiKey,
       },
     ).then((value) {
       business = value.data["articles"];
@@ -63,7 +75,7 @@ class NewsHandler extends Cubit<NewsState> {
       query: {
         'country': 'eg',
         'category': 'sports',
-        'apiKey': '65f7f556ec76449fa7dc7c0069f040ca'
+        'apiKey': apiKey,
       },
     ).then((value) {
       sports = value.data["articles"];
@@ -81,7 +93,7 @@ class NewsHandler extends Cubit<NewsState> {
       query: {
         'country': 'eg',
         'category': 'science',
-        'apiKey': '65f7f556ec76449fa7dc7c0069f040ca'
+        'apiKey': apiKey,
       },
     ).then((value) {
       science = value.data["articles"];
