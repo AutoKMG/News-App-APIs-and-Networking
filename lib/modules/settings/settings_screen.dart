@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/shared/logic/news/handler.dart';
+import 'package:country_picker/country_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key key}) : super(key: key);
@@ -45,6 +46,47 @@ class SettingsScreen extends StatelessWidget {
                     newsHandler.changeDirection();
                   },
                 ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Country: ${newsHandler.selectedCountry}',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      showCountryPicker(
+                        context: context,
+                        countryListTheme: CountryListThemeData(
+                          flagSize: 25,
+                          backgroundColor: Colors.white,
+                          textStyle:
+                              TextStyle(fontSize: 16, color: Colors.blueGrey),
+                          bottomSheetHeight:
+                              MediaQuery.of(context).size.height * 0.95,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
+                          inputDecoration: InputDecoration(
+                            labelText: 'Search',
+                            hintText: 'Start typing to search',
+                            prefixIcon: const Icon(Icons.search),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: const Color(0xFF8C98A8).withOpacity(0.2),
+                              ),
+                            ),
+                          ),
+                        ),
+                        onSelect: (Country country) =>
+                            newsHandler.changeCountry(country.countryCode),
+                      );
+                    },
+                    child: Text("Change")),
               ],
             )
           ],
