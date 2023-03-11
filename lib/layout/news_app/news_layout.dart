@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/modules/search/search.dart';
 import 'package:news_app/shared/logic/news/handler.dart';
 
 class NewsLayout extends StatelessWidget {
@@ -14,7 +15,20 @@ class NewsLayout extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text("News App"),
-            actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SearchScreen();
+                        },
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.search))
+            ],
           ),
           body: newsHandler.screens[newsHandler.currentIndex],
           bottomNavigationBar: BottomNavigationBar(

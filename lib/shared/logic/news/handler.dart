@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/modules/business/business_screen.dart';
 import 'package:news_app/modules/science/science_screen.dart';
@@ -11,19 +12,24 @@ part 'state.dart';
 
 class NewsHandler extends Cubit<NewsState> {
   NewsHandler() : super(NewsStateInitial()) {
-    isDark = CacheHelper.getBoolean(key: 'isDark') ?? isDark;
-    isRTL = CacheHelper.getBoolean(key: 'isRTL') ?? isRTL;
+    isDark = CacheHelper.getBoolean(key: 'isDark') ?? false;
+    isRTL = CacheHelper.getBoolean(key: 'isRTL') ?? false;
+    selectedCountry = CacheHelper.getString(key: 'selectedCountry') ?? 'us';
     getBusinessData();
     getSportsData();
     getScienceData();
   }
-  String apiKey = '3afd108e1ee1445c80a26fd0cfaa356e';
-  bool isRTL = false;
-  bool isDark = false;
+  String apiKey = 'baa537631ad14271b3e3971ce3a16f82';
+  bool isRTL;
+  bool isDark;
   int currentIndex = 0;
+  String selectedCountry;
+  var searchControllor = TextEditingController();
+
   List<dynamic> business = [];
   List<dynamic> sports = [];
   List<dynamic> science = [];
+  List<dynamic> searchResult = [];
   List<Widget> screens = [
     BusinessScreen(),
     SportsScreen(),
@@ -57,12 +63,22 @@ class NewsHandler extends Cubit<NewsState> {
     });
   }
 
+  void changeCountry(String country) {
+    selectedCountry = country;
+    CacheHelper.putString(key: 'selectedCountry', value: country).then((_) {
+      getBusinessData();
+      getScienceData();
+      getSportsData();
+      emit(NewsStateCountryChanged());
+    });
+  }
+
   void getBusinessData() {
     emit(NewsStateGetBusinessLoading());
     DioHelper.getData(
       path: 'v2/top-headlines',
       query: {
-        'country': 'eg',
+        'country': selectedCountry,
         'category': 'business',
         'apiKey': apiKey,
       },
@@ -80,7 +96,7 @@ class NewsHandler extends Cubit<NewsState> {
     DioHelper.getData(
       path: 'v2/top-headlines',
       query: {
-        'country': 'eg',
+        'country': selectedCountry,
         'category': 'sports',
         'apiKey': apiKey,
       },
@@ -98,7 +114,7 @@ class NewsHandler extends Cubit<NewsState> {
     DioHelper.getData(
       path: 'v2/top-headlines',
       query: {
-        'country': 'eg',
+        'country': selectedCountry,
         'category': 'science',
         'apiKey': apiKey,
       },
@@ -108,6 +124,24 @@ class NewsHandler extends Cubit<NewsState> {
     }).catchError((error) {
       print(error.toString());
       emit(NewsStateGetScienceError(error.toString()));
+    });
+  }
+
+  void getSearchData(String keyword) {
+    print(keyword);
+    emit(NewsStateGetSearchLoading());
+    DioHelper.getData(
+      path: 'v2/everything',
+      query: {
+        'q': '$keyword',
+        'apiKey': apiKey,
+      },
+    ).then((value) {
+      searchResult = value.data["articles"];
+      emit(NewsStateGetSearchSuccess());
+    }).catchError((error) {
+      print(error.toString());
+      emit(NewsStateGetSearchError(error.toString()));
     });
   }
 }
