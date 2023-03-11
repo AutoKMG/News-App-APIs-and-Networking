@@ -14,7 +14,7 @@ class ScienceScreen extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-        return articlesScreenBuilder(newsHandler.science);
+        return articlesScreenBuilder(newsHandler.science, context);
       },
     );
   }

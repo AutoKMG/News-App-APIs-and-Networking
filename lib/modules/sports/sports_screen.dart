@@ -14,7 +14,7 @@ class SportsScreen extends StatelessWidget {
         // TODO: implement listener
       },
       builder: (context, state) {
-        return articlesScreenBuilder(newsHandler.sports);
+        return articlesScreenBuilder(newsHandler.sports, context);
       },
     );
   }
