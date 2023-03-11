@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/modules/web_view/web_view_screen.dart';
 
 Widget defaultButton({
   double width = double.infinity,
@@ -30,6 +31,7 @@ Widget defaultButton({
     );
 
 Widget defaultFormField({
+  @required context,
   @required TextEditingController controller,
   @required TextInputType type,
   Function onSubmit,
@@ -54,10 +56,14 @@ Widget defaultFormField({
       showCursor: showCursor,
       readOnly: readOnly,
       validator: validate,
+      cursorColor: Colors.deepOrange,
+      style: TextStyle(color: Colors.deepOrange),
       decoration: InputDecoration(
+        labelStyle: TextStyle(color: Colors.deepOrange),
         labelText: label,
         prefixIcon: Icon(
           prefix,
+          color: Colors.deepOrange,
         ),
         suffixIcon: suffix != null
             ? IconButton(
@@ -72,51 +78,63 @@ Widget defaultFormField({
     );
 
 Widget buildArticleItem(article, context) {
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Row(
-      children: [
-        Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              image: NetworkImage(
-                  '${article['urlToImage'] ?? "https://i.imgur.com/kmryMrZ.jpg"}'),
-              fit: BoxFit.cover,
-            ),
-          ),
+  return InkWell(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return WebViewScreen(article['url']);
+          },
         ),
-        SizedBox(
-          width: 20,
-        ),
-        Expanded(
-          child: SizedBox(
+      );
+    },
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          Container(
+            width: 120,
             height: 120,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Text(
-                    "${article['title']}",
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-                Text(
-                  "${article['publishedAt']}",
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: NetworkImage(
+                    '${article['urlToImage'] ?? "https://i.imgur.com/JMR0LkP.png"}'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-      ],
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 120,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "${article['title']}",
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  Text(
+                    "${article['publishedAt']}",
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -132,7 +150,7 @@ Widget myDividor() {
   );
 }
 
-Widget articlesScreenBuilder(List list, context) {
+Widget articlesScreenBuilder(List list, context, {isSearch = false}) {
   return ConditionalBuilder(
     condition: list.length > 0,
     builder: (context) {
@@ -148,7 +166,9 @@ Widget articlesScreenBuilder(List list, context) {
       );
     },
     fallback: (context) {
-      return Center(child: CircularProgressIndicator());
+      return isSearch
+          ? Container()
+          : Center(child: CircularProgressIndicator());
     },
   );
 }
