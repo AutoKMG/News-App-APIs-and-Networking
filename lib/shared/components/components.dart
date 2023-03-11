@@ -71,7 +71,7 @@ Widget defaultFormField({
       ),
     );
 
-Widget buildArticleItem(article) {
+Widget buildArticleItem(article, context) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Row(
@@ -103,10 +103,7 @@ Widget buildArticleItem(article) {
                     "${article['title']}",
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
                 Text(
@@ -135,14 +132,14 @@ Widget myDividor() {
   );
 }
 
-Widget articlesScreenBuilder(List list) {
+Widget articlesScreenBuilder(List list, context) {
   return ConditionalBuilder(
     condition: list.length > 0,
     builder: (context) {
       return ListView.separated(
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return buildArticleItem(list[index]);
+          return buildArticleItem(list[index], context);
         },
         separatorBuilder: (context, index) {
           return myDividor();
